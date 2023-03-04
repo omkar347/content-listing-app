@@ -15,15 +15,17 @@ export function useFetchMovies(isLoading) {
     const handleScroll = useCallback(() => {
         const isNextCall = fnIsScrollTouchedToBottom();
         if (isNextCall && !isDone && !isDataLoading && !sQuery) {
-            throttled(() => setPageNo((prevState => (prevState + 1))), 500)(); 
-        } 
+            throttled(() => setPageNo((prevState => (prevState + 1))), 500)();
+        }
     }, [isDone, isDataLoading, sQuery]);
 
     // Call on initial render only
     useEffect(() => {
+        setPageNo(prevState => (prevState + 1));
+    }, []);
+    useEffect(() => {
         if (!isLoading) {
             window.addEventListener('scroll', handleScroll);
-            handleScroll();
             return () => {
                 window.removeEventListener('scroll', handleScroll);
             };

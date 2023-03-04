@@ -36,7 +36,7 @@ export const fnIsScrollTouchedToBottom = () => {
     const jTotalHeight = $html.scrollHeight;
     const jViewportHeight = window.innerHeight;
     const jSrollTop = $html.scrollTop;
-    if ((jViewportHeight + jSrollTop) >= (jTotalHeight)) {
+    if ((jViewportHeight + jSrollTop) >= (jTotalHeight - 50)) {
         return true;
     }
     return false;
