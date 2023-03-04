@@ -1,4 +1,4 @@
-export const sBasePath = '/';
+export const sBasePath = `${process.env.PUBLIC_URL}/`;
 export const sApiPath = `${sBasePath}resources/API`;
 export const sImagePath = `${sBasePath}resources/Slices`;
 export const sPlaceHolderImagePath = `${sImagePath}/placeholder_for_missing_posters.png`;
