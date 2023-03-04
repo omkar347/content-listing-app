@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useFetchMovies } from './customHooks/useFetchMovies';
 import SearchBar from './searchBar';
 import MovieCard from './movieCard';
@@ -37,7 +37,7 @@ export function Movies() {
         nodeListing = <NoDataFound title={sLoadingText} />
     }
     return (<div className='bg-black px-[30px] max-sm:px-[15px] min-w-xs min-h-screen'>
-        <header className="sticky top-0 z-30 flex items-center w-full h-[192px] max-sm:h-[132px] bg-[url('./../public/resources/Slices/nav_bar.png')] bg-no-repeat bg-cover">
+        <header className="sticky top-0 z-30 flex items-center w-full max-sm:h-[96px] max-md:h-[144px] max-lg:h-[192px] bg-[url('./../public/resources/Slices/nav_bar.png')] bg-no-repeat bg-cover">
             <div className="bg-transparent items-center justify-between w-full flex mb-5 overflow-hidden" >
                 <SearchBar {...propsSearchBar} />
             </div>

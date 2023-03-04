@@ -25,7 +25,7 @@ const SearchBar = ({ title }) => {
     </svg>;
     if (!isSearchOpen) {
         const propsDiv = {
-            className: "font-bold uppercase w-full py-4 pl-4 text-[40pt] max-sm:text-[20pt] max-md:text-[30pt] max-lg:text-[35pt] text-white whitespace-nowrap text-ellipsis overflow-hidden",
+            className: "font-bold w-full py-4 pl-4 text-[40pt] max-sm:text-[20pt] max-md:text-[30pt] max-lg:text-[35pt] text-white whitespace-nowrap text-ellipsis overflow-hidden",
         };
         nodeTitle = <div {...propsDiv}>{title}</div>;
         nodeSvgSearch = <img src={sSearchImagePath} alt='Search' />;

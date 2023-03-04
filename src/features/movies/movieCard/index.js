@@ -20,7 +20,7 @@ const MovieCard = forwardRef(({ [enumApiKeys.posterImage]: posterImage, [enumApi
                 <LazyImage {...propsLazyImage} />
             </div>
             <div className="pt-[24px] max-sm:pt-[12px] text-left">
-                <div className="uppercase text-[36pt] max-sm:text-[12pt] max-md:text-[18pt] max-lg:text-[24pt] text-white font-light whitespace-nowrap text-ellipsis overflow-hidden" title={name}>{name}</div>
+                <div className="text-[36pt] max-sm:text-[12pt] max-md:text-[22pt] max-lg:text-[28pt] text-white font-light whitespace-nowrap text-ellipsis overflow-hidden" title={name}>{name}</div>
             </div>
         </div>
     </div>

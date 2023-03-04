@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
-import { enumApiKeys, getDummyData, fnIsScrollTouchedToBottom, throttled } from '../../../common/config';
+import { enumApiKeys, getDummyData, } from '../../../common/config';
 import { actionCreatorCallMovies, selectMovies, selectPending, selectQuery } from './../moviesSlice';
 
 export function useFetchMovies(observer) {
@@ -33,14 +33,16 @@ export function useFetchMovies(observer) {
     useEffect(() => {
         setPageNo(prevState => (prevState + 1));
     }, []);
+
     // Call when page no is changed
     useEffect(() => {
         if (jPageNo) {
             dispatch(actionCreatorCallMovies(jPageNo));
         }
     }, [jPageNo, dispatch]);
-    let arrAllMergedData = [...searchedData];
+
     // Show some buffer data untill next records comes;
+    let arrAllMergedData = [...searchedData];
     if (isDataLoading) {
         arrAllMergedData = [...arrAllMergedData, ...getDummyData(20)];
     }
