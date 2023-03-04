@@ -3,7 +3,7 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { enumApiKeys, getDummyData, fnIsScrollTouchedToBottom, throttled } from '../../../common/config';
 import { actionCreatorCallMovies, selectMovies, selectPending, selectQuery } from './../moviesSlice';
 
-export function useFetchMovies(isLoading) {
+export function useFetchMovies(observer) {
     const [jPageNo, setPageNo] = useState(0);
     const dispatch = useDispatch();
     const data = useSelector(selectMovies, shallowEqual);
@@ -12,25 +12,27 @@ export function useFetchMovies(isLoading) {
 
     const { [enumApiKeys.searchedData]: searchedData = [], [enumApiKeys.isDone]: isDone, [enumApiKeys.title]: title } = data || {};
 
-    const handleScroll = useCallback(() => {
-        const isNextCall = fnIsScrollTouchedToBottom();
-        if (isNextCall && !isDone && !isDataLoading && !sQuery) {
-            throttled(() => setPageNo((prevState => (prevState + 1))), 500)();
+    const lastEleRef = useCallback((node) => {
+        if (isDataLoading) {
+            return
         }
-    }, [isDone, isDataLoading, sQuery]);
+        if (observer && observer.current) {
+            observer.current.disconnect();
+        }
+        observer.current = new IntersectionObserver((entrys) => {
+            if (entrys[0].isIntersecting && !isDone && !isDataLoading) {
+                setPageNo(prevState => (prevState + 1));
+            }
+        });
+        if (node) {
+            observer.current.observe(node);
+        }
+    }, [isDataLoading, isDone]);
 
     // Call on initial render only
     useEffect(() => {
         setPageNo(prevState => (prevState + 1));
     }, []);
-    useEffect(() => {
-        if (!isLoading) {
-            window.addEventListener('scroll', handleScroll);
-            return () => {
-                window.removeEventListener('scroll', handleScroll);
-            };
-        }
-    }, [isLoading, handleScroll]);
     // Call when page no is changed
     useEffect(() => {
         if (jPageNo) {
@@ -42,5 +44,5 @@ export function useFetchMovies(isLoading) {
     if (isDataLoading) {
         arrAllMergedData = [...arrAllMergedData, ...getDummyData(20)];
     }
-    return { arrAllMergedData, isDone, isDataLoading, title, sQuery };
+    return { arrAllMergedData, isDone, isDataLoading, title, sQuery, lastEleRef };
 }
