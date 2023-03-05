@@ -1,4 +1,4 @@
-import { Movies } from './features/movies/Movies';
+import { Movies } from './features/movies';
 
 function App() {
   return (

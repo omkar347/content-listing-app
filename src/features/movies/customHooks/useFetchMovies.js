@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { enumApiKeys, getDummyData, } from '../../../common/config';
 import { actionCreatorCallMovies, selectMovies, selectPending, selectQuery } from './../moviesSlice';
 
-export function useFetchMovies(observer) {
+function useFetchMovies() {
     const [jPageNo, setPageNo] = useState(0);
     const dispatch = useDispatch();
     const data = useSelector(selectMovies, shallowEqual);
@@ -11,23 +11,6 @@ export function useFetchMovies(observer) {
     const sQuery = useSelector(selectQuery);
 
     const { [enumApiKeys.searchedData]: searchedData = [], [enumApiKeys.isDone]: isDone, [enumApiKeys.title]: title } = data || {};
-
-    const lastEleRef = useCallback((node) => {
-        if (isDataLoading) {
-            return
-        }
-        if (observer && observer.current) {
-            observer.current.disconnect();
-        }
-        observer.current = new IntersectionObserver((entrys) => {
-            if (entrys[0].isIntersecting && !isDone && !isDataLoading) {
-                setPageNo(prevState => (prevState + 1));
-            }
-        });
-        if (node) {
-            observer.current.observe(node);
-        }
-    }, [isDataLoading, isDone]);
 
     // Call on initial render only
     useEffect(() => {
@@ -42,9 +25,13 @@ export function useFetchMovies(observer) {
     }, [jPageNo, dispatch]);
 
     // Show some buffer data untill next records comes;
-    let arrAllMergedData = [...searchedData];
-    if (isDataLoading) {
-        arrAllMergedData = [...arrAllMergedData, ...getDummyData(20)];
-    }
-    return { arrAllMergedData, isDone, isDataLoading, title, sQuery, lastEleRef };
-}
+    let arrAllMergedData = useMemo(() => {
+        if (isDataLoading) {
+            return [...searchedData, ...getDummyData(20)];
+        }
+        return searchedData;
+    }, [isDataLoading, searchedData]);
+
+    return { arrAllMergedData, isDone, isDataLoading, title, sQuery, setPageNo };
+};
+export default useFetchMovies;

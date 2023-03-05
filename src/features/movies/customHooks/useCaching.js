@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fnCacheImages, sImagePath, sPlaceHolderImagePath } from '../../../common/config';
 
-export function useCachinmg() {
+ function useCaching() {
     const [isLoading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,6 +16,9 @@ export function useCachinmg() {
             `${sImagePath}/poster7.jpg`,
             `${sImagePath}/poster8.jpg`,
             `${sImagePath}/poster9.jpg`,
+            `${sImagePath}/search.png`,
+            `${sImagePath}/Back.png`,
+            `${sImagePath}/nav_bar.png`,
         ];
             const promises = fnCacheImages(imgs);
             await Promise.all(promises);
@@ -25,4 +28,5 @@ export function useCachinmg() {
     }, []);
 
     return { isLoading };
-}
+};
+export default useCaching;
